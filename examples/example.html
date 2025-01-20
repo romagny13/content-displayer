@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Content Displayer Demo</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Segoe UI", system-ui, sans-serif;
+        line-height: 1.6;
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        background: #f5f5f5;
+      }
+
+      .section {
+        margin: 2rem 0;
+        padding: 2rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        color: #333;
+        margin-bottom: 1rem;
+      }
+
+      h2 {
+        color: #666;
+        margin: 1rem 0;
+      }
+
+      .trigger-group {
+        display: flex;
+        gap: 1rem;
+        margin: 1rem 0;
+      }
+
+      .btn {
+        padding: 0.5rem 1rem;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background-color 0.3s;
+      }
+
+      .btn:hover {
+        background: #0056b3;
+      }
+
+      .target-zone {
+        margin-top: 1rem;
+        min-height: 200px;
+        border: 2px dashed #ccc;
+        border-radius: 4px;
+        padding: 1rem;
+      }
+
+      /* Styles pour le contenu */
+      .content-wrapper {
+        opacity: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.3s ease-in-out;
+      }
+
+      .content-wrapper.visible {
+        opacity: 1;
+        max-height: 500px;
+      }
+
+      .content-container {
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 4px;
+        margin-top: 1rem;
+      }
+
+      /* Animation pour les images */
+      .content-wrapper img {
+        max-width: 100%;
+        transform: scale(0.9);
+        transition: transform 0.3s ease-in-out;
+      }
+
+      .content-wrapper.visible img {
+        transform: scale(1);
+      }
+
+      /* Animation pour le HTML */
+      .content-wrapper .html-content {
+        transform: translateY(20px);
+        transition: transform 0.3s ease-in-out;
+      }
+
+      .content-wrapper.visible .html-content {
+        transform: translateY(0);
+      }
+
+      /* Grille pour la galerie */
+      .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      .gallery-grid img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 4px;
+      }
+
+      /* Code d'exemple */
+      .code-block {
+        background: #f8f9fa;
+        padding: 1rem;
+        border-radius: 4px;
+        margin: 1rem 0;
+        font-family: monospace;
+        white-space: pre-wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Content Displayer Demo</h1>
+
+    <!-- Exemple 1: Affichage simple d'une image -->
+    <div class="section">
+      <h2>1. Affichage simple d'une image</h2>
+      <a
+        href="#"
+        class="btn"
+        data-content-trigger
+        data-content-source="https://dummyimage.com/400x300/111/fff.png"
+      >
+        Afficher l'image
+      </a>
+    </div>
+
+    <!-- Exemple 2: Contenu HTML dans une zone cible -->
+    <div class="section">
+      <h2>2. Contenu HTML dans une zone cible</h2>
+      <div class="trigger-group">
+        <a
+          href="#"
+          class="btn"
+          data-content-trigger
+          data-content-target="targetZone1"
+          data-content-source="<div class='html-content'><h3>Premier contenu</h3><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p></div>"
+        >
+          Contenu 1
+        </a>
+        <a
+          href="#"
+          class="btn"
+          data-content-trigger
+          data-content-target="targetZone1"
+          data-content-source="<div class='html-content'><h3>Deuxième contenu</h3><p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>"
+        >
+          Contenu 2
+        </a>
+      </div>
+      <div id="targetZone1" class="target-zone"></div>
+    </div>
+
+    <!-- Exemple 3: Galerie d'images -->
+    <div class="section">
+      <h2>3. Galerie d'images</h2>
+      <div class="gallery-grid">
+        <a
+          href="#"
+          data-content-trigger
+          data-content-target="imageViewer"
+          data-content-source="https://dummyimage.com/800x600/111/fff.png"
+        >
+          <img src="https://dummyimage.com/150x150/111/fff.png" alt="Miniature 1" />
+        </a>
+        <a
+          href="#"
+          data-content-trigger
+          data-content-target="imageViewer"
+          data-content-source="https://dummyimage.com/800x600/111/fff.png"
+        >
+          <img src="https://dummyimage.com/150x150/111/fff.png" alt="Miniature 2" />
+        </a>
+        <a
+          href="#"
+          data-content-trigger
+          data-content-target="imageViewer"
+          data-content-source="https://dummyimage.com/800x600/111/fff.png"
+        >
+          <img src="https://dummyimage.com/150x150/111/fff.png" alt="Miniature 3" />
+        </a>
+      </div>
+      <div id="imageViewer" class="target-zone"></div>
+    </div>
+
+    <!-- Exemple 4: Contrôles globaux -->
+    <div class="section">
+      <h2>4. Contrôles globaux</h2>
+      <div class="trigger-group">
+        <button class="btn" onclick="displayer.showAllContent()">
+          Tout afficher
+        </button>
+        <button class="btn" onclick="displayer.hideAllContent()">
+          Tout masquer
+        </button>
+      </div>
+    </div>
+
+    <!-- Code d'exemple -->
+    <div class="section">
+      <h2>Code d'initialisation</h2>
+      <div class="code-block">
+        const displayer = new ContentDisplayer({ onContentShow: (container,
+        trigger, group) => { console.log('Contenu affiché'); }, onContentHide:
+        (container, trigger, group) => { console.log('Contenu masqué'); } });
+      </div>
+    </div>
+
+    <script src="../src/content-displayer.js"></script>
+    <script>
+
+      // Initialisation
+      const displayer = new ContentDisplayer({
+        onContentShow: (container, trigger, group) => {
+          console.log("Contenu affiché");
+        },
+        onContentHide: (container, trigger, group) => {
+          console.log("Contenu masqué");
+        },
+        onError: (message, trigger) => {
+          console.error("Erreur:", message);
+        },
+      });
+    </script>
+  </body>
+</html>
